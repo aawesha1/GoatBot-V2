@@ -1,87 +1,55 @@
-const { from } = Buffer;
-
-function decode(input) {
-  return Buffer.from(input, "base64").toString("utf8");
-}
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   config: {
-    name: decode(from("c3BhbQ==", "utf8").toString("base64")),
-    version: decode(from("MS4w", "utf8").toString("base64")),
-    author: decode(from("WW91ck5hbWU=", "utf8").toString("base64")),
-    countDown: parseInt(decode(from("NQ==", "utf8").toString("base64"))),
-    role: parseInt(decode(from("Mg==", "utf8").toString("base64"))),
-    shortDescription: decode(
-      from("U3BhbSBhIG1lc3NhZ2U=", "utf8").toString("base64")
-    ),
-    longDescription: decode(
-      from(
-        "U2VuZCB0aGUgcHJvdmlkZWQgbWVzc2FnZSBtdWx0aXBsZSB0aW1lcyB3aXRoIGEgY3VzdG9taXphYmxlIGFtb3VudC4=",
-        "utf8"
-      ).toString("base64")
-    ),
-    category: decode(from("VXRpbGl0eQ==", "utf8").toString("base64")),
+    name: Buffer.from("c3BhbQ==", "base64").toString("utf8"),
+    version: Buffer.from("MS4w", "base64").toString("utf8"),
+    author: Buffer.from("WW91ck5hbWU=", "base64").toString("utf8"),
+    countDown: parseInt(Buffer.from("NQ==", "base64").toString("utf8")),
+    role: parseInt(Buffer.from("Mg==", "base64").toString("utf8")),
+    shortDescription: Buffer.from("U3BhbSBhIG1lc3NhZ2U=", "base64").toString("utf8"),
+    longDescription: Buffer.from("U2VuZCB0aGUgcHJvdmlkZWQgbWVzc2FnZSBtdWx0aXBsZSB0aW1lcyB3aXRoIGEgY3VzdG9taXphYmxlIGFtb3VudC4=", "base64").toString("utf8"),
+    category: Buffer.from("VXRpbGl0eQ==", "base64").toString("utf8")
   },
 
-  onStart: async function () {
-    // Any initialization needed can go here
-  },
+  onStart: async function() {},
 
-  onChat: async function ({ event, api }) {
-    const stopSpamCommand = decode(from("LnN0b3BzcGFt", "utf8").toString("base64"));
-    const spamCommand = decode(from("LnNwYW0g", "utf8").toString("base64"));
+  onChat: async function({ event, api }) {
+    const triggerWord = Buffer.from("I3NwYW0=", "base64").toString("utf8");
+    const stopWord = Buffer.from("I3N0b3BzcGFt", "base64").toString("utf8");
+    const doneMessage = Buffer.from("U3BhbW1lZCB7fSBNZXNzYWdlcyBieSBNaXNzIEFheXVzZSE=", "base64").toString("utf8");
+    const errorText = Buffer.from("VGhlcmUgd2FzIGFuIGVycm9yIHdoaWxlIHNwYW1taW5nIG1lc3NhZ2VzLg==", "base64").toString("utf8");
 
-    const { threadID, messageID } = event;
-
-    if (event.body && event.body.toLowerCase().includes(stopSpamCommand)) {
-      api.sendMessage(decode(from("U3RvcHBpbmcgdGhlIHNwYW0gY29tbWFuZC4=", "utf8").toString("base64")), threadID);
+    if (event.body && event.body.toLowerCase().includes(stopWord)) {
+      api.sendMessage(Buffer.from("U3RvcHBpbmcgdGhlIHNwYW0gY29tbWFuZC4=", "base64").toString("utf8"), event.threadID);
       return;
     }
 
-    if (event.body && event.body.toLowerCase().startsWith(spamCommand)) {
+    if (event.body && event.body.toLowerCase().startsWith(triggerWord)) {
       try {
-        const parts = event.body.slice(spamCommand.length).split(" ");
-        const messageToSpam = parts.slice(0, parts.length - 1).join(" ");
-        const amount = parseInt(parts[parts.length - 1]);
+        let parts = event.body.slice(triggerWord.length).trim().split(" ");
+        let messageToSpam = parts.slice(0, -1).join(" ");
+        let amount = parseInt(parts[parts.length - 1]);
 
         if (!messageToSpam || isNaN(amount) || amount <= 0) {
-          return api.sendMessage(
-            decode(from("UGxlYXNlIHByb3ZpZGUgYSB2YWxpZCBtZXNzYWdlIGFuZCBhbW91bnQuIEV4YW1wbGU6IC5zcGFtIGhlbGxvIDEw", "utf8").toString("base64")),
-            threadID
-          );
+          return api.sendMessage(Buffer.from("UGxlYXNlIHByb3ZpZGUgYSB2YWxpZCBtZXNzYWdlIGFuZCBhbW91bnQuIEV4YW1wbGU6ICNz" +
+          "cGFtIGhlbGxvIDEw", "base64").toString("utf8"), event.threadID);
         }
 
         let spamCount = 0;
-        const sendMessage = (msg) => api.sendMessage(msg, threadID);
-
         const spamInterval = setInterval(() => {
           if (spamCount >= amount) {
             clearInterval(spamInterval);
-            console.log(
-              decode(from("RmluaXNoZWQgc3BhbW1pbmc=", "utf8").toString("base64")) +
-              ` ${amount} ` +
-              decode(from("bWVzc2FnZXMu", "utf8").toString("base64"))
-            );
-            api.sendMessage(
-              `Done!! ${decode(
-                from("U3BhbW1lZCA=", "utf8").toString("base64")
-              )}${amount} ${decode(
-                from("TWVzc2FnZXM=", "utf8").toString("base64")
-              )}💬✅.`,
-              threadID
-            );
+            api.sendMessage(doneMessage.replace("{}", amount), event.threadID);
             return;
           }
-
-          console.log(decode(from("U2VuZGluZyBzcGFtIG1lc3NhZ2U=", "utf8").toString("base64")) + ` ${spamCount + 1}`);
-          sendMessage(messageToSpam);
+          api.sendMessage(messageToSpam, event.threadID);
           spamCount++;
         }, 100);
-        console.log(decode(from("U3RhcnRlZCBzcGFtbWluZzo=", "utf8").toString("base64")) + ` "${messageToSpam}" ${amount} ` + decode(from("dGltZXM=", "utf8").toString("base64")));
       } catch (error) {
-        console.error(decode(from("RXJyb3IgZHVyaW5nIHNwYW0gZXhlY3V0aW9uOg==", "utf8").toString("base64")), error);
-        api.sendMessage(decode(from("VGhlcmUgd2FzIGFuIGVycm9yIHdoaWxlIHNwYW1taW5nIG1lc3NhZ2VzLg==", "utf8").toString("base64")), threadID);
+        api.sendMessage(errorText, event.threadID);
       }
     }
-  },
+  }
 };
