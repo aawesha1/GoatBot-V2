@@ -2,8 +2,8 @@ const fs = require("fs-extra");
 const axios = require("axios");
 const path = require("path");
 const { getPrefix } = global.utils;
-const { commands, aliases } = global.CatBot;
-const doNotDelete = "[ 😺 | Cat Bot V1 ]";
+const { commands, aliases } = global.GoatBot;
+const doNotDelete = "[ 🐐 | Goat Bot V1 ]";
 /**
 * @author NTKhang
 * @author: do not delete it
