@@ -31,7 +31,7 @@ module.exports = {
         return { reply: replies[newIndex], index: newIndex };
       };
 
-      // Replies for "Aayusha"
+      // Replies for "Aawesh"
       if (event.body && event.body.toLowerCase().includes("hello")) {
         const repliesForAawesh = [
           ${name}, Hello!,
@@ -52,7 +52,7 @@ module.exports = {
         });
       }
 
-      // Replies for "n"
+      // Replies for "Aawesh"
       if (event.body && event.body.toLowerCase().includes("hi")) {
         const repliesForAawesh = [
           $Hi {name}, How are you and what can i help you. Have a nice day too!!😉 ,
