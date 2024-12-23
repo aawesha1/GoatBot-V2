@@ -1,27 +1,75 @@
-const path = require('path');
+let lastReplyIndexAawesh = null;
+let lastReplyIndexAawesh = null;
 
 module.exports = {
   config: {
-    name: Buffer.from("QWF5dXV1dQ==", "base64").toString("utf8"),
-    version: Buffer.from("MS4w", "base64").toString("utf8"),
-    author: Buffer.from("QWNlR3Vu", "base64").toString("utf8"),
-    countDown: parseInt(Buffer.from("NQ==", "base64").toString("utf8")),
-    role: parseInt(Buffer.from("MA==", "base64").toString("utf8")),
-    shortDescription: Buffer.from("bm8gcHJlZml4", "base64").toString("utf8"),
-    longDescription: Buffer.from("bm8gcHJlZml4", "base64").toString("utf8"),
-    category: Buffer.from("bm8gcHJlZml4", "base64").toString("utf8")
+    name: "callAakash",
+    version: "1.0",
+    author: "Aayusha",
+    countDown: 5,
+    role: 0,
+    shortDescription: "no prefix",
+    longDescription: "no prefix",
+    category: "no prefix",
   },
 
-  onStart: async function() {},
+  onStart: async function () {},
 
-  onChat: async function({ api, event, message, getLang }) {
-    const triggerWord = Buffer.from("YWF3ZXNo", "base64").toString("utf8");
-    const responseText = Buffer.from("dW5yZWFsLmFhd2V4aF8=", "base64").toString("utf8") + " 🤍😗";
-    const reactionEmoji = String.fromCodePoint(0x1F90D);
+  onChat: async function ({ event, message, api, usersData }) {
+    try {
+      const id = event.senderID;
+      const userData = await usersData.get(id);
+      const name = userData.name;
+      const ment = [{ id: id, tag: name }];
 
-    if (event.body && event.body.toLowerCase().includes(triggerWord)) {
-      message.reply(responseText);
-      api.setMessageReaction(reactionEmoji, event.messageID, () => {}, true);
+      // Helper function to get a random reply without repetition
+      const getRandomReply = (replies, lastIndex) => {
+        let newIndex;
+        do {
+          newIndex = Math.floor(Math.random() * replies.length);
+        } while (newIndex === lastIndex);
+        return { reply: replies[newIndex], index: newIndex };
+      };
+
+      // Replies for "Aawesh"
+      if (event.body && event.body.toLowerCase().includes("hello")) {
+        const repliesForAawesh = [
+          ${name}, Hello!,
+           Hi ${name}, how can i help you.,
+          ${name}, Have a good day!,
+          ${name}, 🙋‍♂️,
+          ${name}! Hello Boss!!,
+        ];
+
+        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAawesh);
+        lastReplyIndexAawesh = index;
+
+        api.setMessageReaction("💬", event.messageID, () => {}, true);
+
+        return message.reply({
+          body: reply,
+          mentions: ment,
+        });
+      }
+
+      // Replies for "n"
+      if (event.body && event.body.toLowerCase().includes("hi")) {
+        const repliesForAyusha = [
+          $Hi {name}, How are you and what can i help you. Have a nice day too!!😉 ,
+        ];
+
+        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAawesh);
+        lastReplyIndexAawesh = index;
+
+        api.setMessageReaction("💬", event.messageID, () => {}, true);
+
+        return message.reply({
+          body: reply,
+          mentions: ment,
+        });
+      }
+    } catch (error) {
+      console.error("Error setting reaction or sending reply:", error);
     }
-  }
+  },
 };
