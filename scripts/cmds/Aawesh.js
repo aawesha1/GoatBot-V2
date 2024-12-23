@@ -31,7 +31,7 @@ module.exports = {
         return { reply: replies[newIndex], index: newIndex };
       };
 
-      // Replies for "Aawesh"
+      // Replies for "Aayusha"
       if (event.body && event.body.toLowerCase().includes("hello")) {
         const repliesForAawesh = [
           ${name}, Hello!,
@@ -58,7 +58,7 @@ module.exports = {
           $Hi {name}, How are you and what can i help you. Have a nice day too!!😉 ,
         ];
 
-        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAyusha);
+        const { reply, index } = getRandomReply(repliesForAyusha, lastReplyIndexAyusha);
         lastReplyIndexAyusha = index;
 
         api.setMessageReaction("💬", event.messageID, () => {}, true);
