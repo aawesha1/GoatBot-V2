@@ -1,5 +1,5 @@
-let lastReplyIndexAawesh = null;
-let lastReplyIndexAawesh = null;
+let lastReplyIndexAayusha = null;
+let lastReplyIndexAyusha = null;
 
 module.exports = {
   config: {
@@ -41,8 +41,8 @@ module.exports = {
           ${name}! Hello Boss!!,
         ];
 
-        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAawesh);
-        lastReplyIndexAawesh = index;
+        const { reply, index } = getRandomReply(repliesForAayusha, lastReplyIndexAayusha);
+        lastReplyIndexAayusha = index;
 
         api.setMessageReaction("💬", event.messageID, () => {}, true);
 
@@ -54,12 +54,12 @@ module.exports = {
 
       // Replies for "n"
       if (event.body && event.body.toLowerCase().includes("hi")) {
-        const repliesForAyusha = [
+        const repliesForAawesh = [
           $Hi {name}, How are you and what can i help you. Have a nice day too!!😉 ,
         ];
 
-        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAawesh);
-        lastReplyIndexAawesh = index;
+        const { reply, index } = getRandomReply(repliesForAawesh, lastReplyIndexAyusha);
+        lastReplyIndexAyusha = index;
 
         api.setMessageReaction("💬", event.messageID, () => {}, true);
 
