@@ -44,7 +44,7 @@ module.exports = {
           writer.on('finish', () => {
             // Send the message and video attachment
             message.send({
-              body: "Hi, I Am Hero. Developed By  Aawesh Sir🤍",
+              body: "Hi, I Am Hero. Developed By Aawesh Sir🤍",
               attachment: fs.createReadStream(videoPath),
             });
           });
