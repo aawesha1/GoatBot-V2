@@ -27,18 +27,18 @@ module.exports = {
         let newIndex;
         do {
           newIndex = Math.floor(Math.random() * replies.length);
-        } while (newIndex === lastIndex);
+        } while (newIndex === lastIndex && replies.length > 1);
         return { reply: replies[newIndex], index: newIndex };
       };
 
-      // Replies for "Aawesh"
+      // Replies for "hello"
       if (event.body && event.body.toLowerCase().includes("hello")) {
-        const repliesForAawesh = [
-          ${name}, Hello!,
-           Hi ${name}, how can i help you.,
-          ${name}, Have a good day!,
-          ${name}, 🙋‍♂️,
-          ${name}! Hello Boss!!,
+        const repliesForAayusha = [
+          `${name}, Hello!`,
+          `Hi ${name}, how can I help you?`,
+          `${name}, Have a good day!`,
+          `${name}, 🙋‍♂️`,
+          `${name}! Hello Boss!!`,
         ];
 
         const { reply, index } = getRandomReply(repliesForAayusha, lastReplyIndexAayusha);
@@ -52,10 +52,10 @@ module.exports = {
         });
       }
 
-      // Replies for "Aawesh"
+      // Replies for "hi"
       if (event.body && event.body.toLowerCase().includes("hi")) {
-        const repliesForAawesh = [
-          $Hi {name}, How are you and what can i help you. Have a nice day too!!😉 ,
+        const repliesForAyusha = [
+          `Hi ${name}, how are you? What can I help you with? Have a nice day too! 😉`,
         ];
 
         const { reply, index } = getRandomReply(repliesForAyusha, lastReplyIndexAyusha);
