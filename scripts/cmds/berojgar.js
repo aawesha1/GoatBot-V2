@@ -54,7 +54,7 @@ module.exports = {
 			}
 
 
-			const messageText = `𝗕𝗲𝗿𝗼𝗷𝗴𝗮𝗿 𝗺𝗮𝗻𝘅𝗲𝘆 𝗵𝗲𝗿𝘂 💁‍♀️:\n${userList.join('\n')}`;
+			const messageText = `Brojgar manxey haru 💁‍♀️:\n${userList.join('\n')}`;
 			api.sendMessage({ body: messageText, mentions: [{ tag: senderId, id: senderId, type: "user" }] }, threadId);
 
 		} catch (error) {
