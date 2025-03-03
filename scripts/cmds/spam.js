@@ -49,7 +49,7 @@ module.exports = {
           if (spamCount >= amount) {
             clearInterval(spamInterval); // Stop the loop after the specified amount
             console.log(`Finished spamming ${amount} messages.`);
-            api.sendMessage(`Done! Aawexh Spammed ${amount} Messages.`, threadID);
+            api.sendMessage(`Done! aawexh master spammed ${amount} messages.`, threadID);
             return;
           }
 
